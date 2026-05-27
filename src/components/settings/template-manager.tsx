@@ -124,7 +124,11 @@ export function TemplateManager() {
       if (error) throw error;
       setTemplates(data || []);
     } catch (err) {
-      console.error('Failed to fetch templates:', err);
+      console.error('Failed to fetch templates:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error('Failed to load templates');
     } finally {
       setLoading(false);
@@ -170,7 +174,11 @@ export function TemplateManager() {
       setForm(emptyForm);
       if (user) await fetchTemplates(user.id);
     } catch (err) {
-      console.error('Save error:', err);
+      console.error('Save error:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error('Failed to create template');
     } finally {
       setSaving(false);
@@ -196,9 +204,9 @@ export function TemplateManager() {
       }
       toast.success(
         `Synced ${data.total} template${data.total === 1 ? '' : 's'} from Meta` +
-          (data.inserted || data.updated
-            ? ` (${data.inserted} new, ${data.updated} updated)`
-            : ''),
+        (data.inserted || data.updated
+          ? ` (${data.inserted} new, ${data.updated} updated)`
+          : ''),
       );
       if (Array.isArray(data.errors) && data.errors.length > 0) {
         // Surface per-template failures so users don't trust a green
@@ -218,7 +226,11 @@ export function TemplateManager() {
       }
       await fetchTemplates(user.id);
     } catch (err) {
-      console.error('Template sync error:', err);
+      console.error('Template sync error:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error(
         err instanceof Error ? err.message : 'Failed to sync templates',
       );
@@ -238,7 +250,11 @@ export function TemplateManager() {
       toast.success('Template deleted');
       setTemplates((prev) => prev.filter((t) => t.id !== id));
     } catch (err) {
-      console.error('Delete error:', err);
+      console.error('Delete error:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error('Failed to delete template');
     }
   }

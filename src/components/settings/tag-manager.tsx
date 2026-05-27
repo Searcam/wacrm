@@ -67,7 +67,11 @@ export function TagManager() {
       if (error) throw error;
       setTags(data || []);
     } catch (err) {
-      console.error('Failed to fetch tags:', err);
+      console.error('Failed to fetch tags:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error('Failed to load tags');
     } finally {
       setLoading(false);
@@ -103,7 +107,11 @@ export function TagManager() {
       setSelectedColor(PRESET_COLORS[3].value);
       if (user) await fetchTags(user.id);
     } catch (err) {
-      console.error('Create error:', err);
+      console.error('Create error:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error('Failed to create tag');
     } finally {
       setSaving(false);
@@ -132,7 +140,11 @@ export function TagManager() {
       setDeleteDialogOpen(false);
       setTagToDelete(null);
     } catch (err) {
-      console.error('Delete error:', err);
+      console.error('Delete error:', {
+        message: (err as any)?.message || err,
+        code: (err as any)?.code,
+        details: (err as any)?.details,
+      });
       toast.error('Failed to delete tag');
     } finally {
       setDeleting(false);

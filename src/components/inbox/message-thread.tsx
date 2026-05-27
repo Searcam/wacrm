@@ -187,7 +187,11 @@ export function MessageThread({
       .then(({ data, error }) => {
         if (cancelled) return;
         if (error) {
-          console.error("Failed to fetch profiles:", error);
+          console.error("Failed to fetch profiles:", {
+            message: error.message,
+            code: error.code,
+            details: error.details,
+          });
           return;
         }
         setProfiles((data as Profile[]) ?? []);
@@ -261,7 +265,11 @@ export function MessageThread({
       if (cancelled) return;
 
       if (error) {
-        console.error("Failed to fetch messages:", error);
+        console.error("Failed to fetch messages:", {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+        });
       } else {
         onMessagesLoadedRef.current(data ?? []);
       }
@@ -297,7 +305,11 @@ export function MessageThread({
         .eq("conversation_id", conversationId);
       if (cancelled) return;
       if (error) {
-        console.error("Failed to fetch reactions:", error);
+        console.error("Failed to fetch reactions:", {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+        });
         return;
       }
       setReactions((data as MessageReaction[]) ?? []);
@@ -404,7 +416,13 @@ export function MessageThread({
       .update({ unread_count: 0 })
       .eq("id", conversationId)
       .then(({ error }) => {
-        if (error) console.error("Failed to reset unread_count:", error);
+        if (error) {
+          console.error("Failed to reset unread_count:", {
+            message: error.message,
+            code: error.code,
+            details: error.details,
+          });
+        }
       });
   }, [conversationId, hasUnread]);
 
@@ -663,7 +681,11 @@ export function MessageThread({
         .eq("id", conversation.id);
 
       if (error) {
-        console.error("Failed to update assignment:", error);
+        console.error("Failed to update assignment:", {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+        });
         toast.error("Failed to update assignment");
         return;
       }
@@ -768,11 +790,11 @@ export function MessageThread({
           {/* Status dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger className={cn(
-                  "inline-flex items-center justify-center h-7 gap-1 px-2 text-xs rounded-md hover:bg-slate-800",
-                  currentStatus?.color ?? "text-slate-400"
-                )}>
-                {currentStatus?.label ?? "Status"}
-                <ChevronDown className="h-3 w-3" />
+              "inline-flex items-center justify-center h-7 gap-1 px-2 text-xs rounded-md hover:bg-slate-800",
+              currentStatus?.color ?? "text-slate-400"
+            )}>
+              {currentStatus?.label ?? "Status"}
+              <ChevronDown className="h-3 w-3" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
@@ -878,9 +900,9 @@ export function MessageThread({
                       : null;
                     const reply = parent
                       ? {
-                          authorLabel: authorLabelFor(parent),
-                          preview: buildReplyPreview(parent),
-                        }
+                        authorLabel: authorLabelFor(parent),
+                        preview: buildReplyPreview(parent),
+                      }
                       : null;
                     const msgReactions = reactionsByMessageId.get(msg.id);
                     // Toggle is computed at the call site — `msgReactions`

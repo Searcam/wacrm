@@ -70,7 +70,12 @@ export function WhatsAppConfig() {
         .maybeSingle();
 
       if (error) {
-        console.error('Failed to load config row:', error);
+        console.error('Failed to load config row:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+        });
       }
 
       if (data) {
@@ -327,7 +332,7 @@ export function WhatsAppConfig() {
             {connectionStatus === 'connected'
               ? 'Your WhatsApp Business API is connected and ready to send/receive messages.'
               : statusMessage ||
-                'Configure your Meta API credentials below to connect your WhatsApp Business account.'}
+              'Configure your Meta API credentials below to connect your WhatsApp Business account.'}
           </AlertDescription>
         </Alert>
 
